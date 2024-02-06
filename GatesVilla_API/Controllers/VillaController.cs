@@ -3,11 +3,12 @@ using GatesVillaAPI.DataAcess.Repo.IRepo;
 using GatesVillaAPI.Models.Models;
 using GatesVillaAPI.Models.Models.DTOs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GatesVilla_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/VillaController")]
     [ApiController]
     public class VillaController : ControllerBase
     {
@@ -18,7 +19,7 @@ namespace GatesVilla_API.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        [HttpGet("{id:int}", Name ="GetVillaById")]
+        [HttpGet("{id:int}", Name = "GetVillaById")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -79,7 +80,7 @@ namespace GatesVilla_API.Controllers
             }
         }
 
-        [HttpPost("{id : int}" , Name ="UpdateVilla")]
+        [HttpPost("AddVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<VillaDTO> Create([FromBody] VillaDTO newVillaDTO)
@@ -95,7 +96,7 @@ namespace GatesVilla_API.Controllers
                 {
                     return BadRequest(newVillaDTO);
                 }
-                if (unitOfWork.Villa.Get(x=>x.Name == newVillaDTO.Name) != null)
+                if (unitOfWork.Villa.Get(x => x.Name == newVillaDTO.Name) != null)
                 {
                     return BadRequest("Villa Already exist");
                 }
@@ -103,7 +104,7 @@ namespace GatesVilla_API.Controllers
                 {
                     Id = newVillaDTO.Id,
                     Name = newVillaDTO.Name,
-                    CreatedTime= DateTime.Now,
+                    CreatedTime = DateTime.Now,
                 };
                 unitOfWork.Villa.Add(newVilla);
                 unitOfWork.SaveChanges();
@@ -144,12 +145,12 @@ namespace GatesVilla_API.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult Update(int id, [FromBody]VillaDTO villaDTO)
+        [HttpPut("UpdateVilla")]
+        public IActionResult Update(int id, [FromBody] VillaDTO villaDTO)
         {
             try
             {
-                
+
                 var villa = unitOfWork.Villa.Get(x => x.Id == id);
                 if (villa == null)
                 {
@@ -161,6 +162,47 @@ namespace GatesVilla_API.Controllers
                 unitOfWork.SaveChanges();
 
                 return Ok($"Villa with ID {id} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+
+        [HttpPatch("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult PatchVilla(int id, [FromBody] JsonPatchDocument<VillaDTO> patchDocument)
+        {
+            try
+            {
+                var villa = unitOfWork.Villa.Get(x => x.Id == id);
+                if (villa == null)
+                {
+                    return NotFound($"Villa with ID {id} not found.");
+                }
+
+                var villaDTO = new VillaDTO
+                {
+                    Id = villa.Id,
+                    Name = villa.Name
+                };
+
+                patchDocument.ApplyTo(villaDTO, ModelState);
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                villa.Name = villaDTO.Name;
+
+                unitOfWork.SaveChanges();
+
+                return Ok($"Villa with ID {id} patched successfully.");
             }
             catch (Exception ex)
             {
