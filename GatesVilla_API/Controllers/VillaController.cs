@@ -104,7 +104,7 @@ namespace GatesVilla_API.Controllers
                 {
                     Id = newVillaDTO.Id,
                     Name = newVillaDTO.Name,
-                    CreatedTime = DateTime.Now,
+                    CreatedDate = DateTime.Now,
                 };
                 unitOfWork.Villa.Add(newVilla);
                 unitOfWork.SaveChanges();
