@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GatesVillaAPI.Models.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -13,8 +14,5 @@ namespace GatesVillaAPI.DataAcess.Repository.IRepo
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T,bool>>filter=null , string? includes =null );
         Task AddAsync(T entity);
         Task DeleteAsync(T entity);
-        Task UpdateAsync(T entity);
-
-
     }
 }

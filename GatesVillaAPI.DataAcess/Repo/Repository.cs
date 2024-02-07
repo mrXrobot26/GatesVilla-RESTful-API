@@ -28,6 +28,7 @@ namespace GatesVillaAPI.DataAcess.Repository
         public async Task DeleteAsync(T entity)
         {
             DbSet.Remove(entity);
+
         }
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter = null, string? includes = null)
@@ -58,13 +59,11 @@ namespace GatesVillaAPI.DataAcess.Repository
                     query = query.Include(include);
                 }
             }
+
             return await query.ToListAsync();
         }
 
-        public async Task UpdateAsync(T entity)
-        {
-            DbSet.Update(entity);
-        }
+
 
     }
 }
