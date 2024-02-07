@@ -19,9 +19,10 @@ namespace GatesVillaAPI.DataAcess.Repo
             Villa = new VillaRepository( db );
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
+
     }
 }

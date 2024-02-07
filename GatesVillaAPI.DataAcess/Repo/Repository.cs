@@ -20,17 +20,17 @@ namespace GatesVillaAPI.DataAcess.Repository
             this.DbSet = _db.Set<T>();
         }
 
-        public void Add(T entity)
+        public async Task AddAsync(T entity)
         {
-            DbSet.Add(entity);
+            await DbSet.AddAsync(entity);
         }
 
-        public void Delete(T entity)
+        public async Task DeleteAsync(T entity)
         {
             DbSet.Remove(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter = null, string? includes = null)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter = null, string? includes = null)
         {
             IQueryable<T> quary = DbSet.Where(filter);
             if (includes!=null)
@@ -40,11 +40,11 @@ namespace GatesVillaAPI.DataAcess.Repository
                     quary=quary.Include(include);
                 }
             }
-            return quary.FirstOrDefault();
+            return await quary.FirstOrDefaultAsync();
 
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, string? includes = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, string? includes = null)
         {
             IQueryable<T> query = DbSet;
             if (filter != null)
@@ -58,12 +58,13 @@ namespace GatesVillaAPI.DataAcess.Repository
                     query = query.Include(include);
                 }
             }
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             DbSet.Update(entity);
         }
+
     }
 }

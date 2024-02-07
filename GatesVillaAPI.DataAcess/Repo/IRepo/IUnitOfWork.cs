@@ -9,6 +9,6 @@ namespace GatesVillaAPI.DataAcess.Repo.IRepo
     public interface IUnitOfWork
     {
         IVillaRepository Villa { get; }
-        void SaveChanges();
+        Task SaveChangesAsync();
     }
 }

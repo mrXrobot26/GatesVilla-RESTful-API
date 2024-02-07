@@ -28,11 +28,11 @@ namespace GatesVilla_API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")] 
 
-        public ActionResult<VillaDTO> GetVilla(int id)
+        public async Task<ActionResult<VillaDTO>> GetVilla(int id)
         {
             try
             {
-                var villa = unitOfWork.Villa.Get(x => x.Id == id);
+                var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
                 if (villa == null)
                 {
                     return NotFound($"Villa with ID {id} not found.");
@@ -53,12 +53,12 @@ namespace GatesVilla_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
+        public async Task<ActionResult<IEnumerable<VillaDTO>>> GetVillas()
         {
             try
             {
-                var villas = unitOfWork.Villa.GetAll();
-                if (villas == null || !villas.Any())
+                var villas = await unitOfWork.Villa.GetAllAsync();
+                if (villas == null )
                 {
                     return NotFound("No villas found.");
                 }
@@ -75,7 +75,7 @@ namespace GatesVilla_API.Controllers
         [HttpPost("AddVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<VillaDTO> Create([FromBody] VillaCreateDTO villaCreateDTO)
+        public async Task<ActionResult<VillaDTO>> Create([FromBody] VillaCreateDTO villaCreateDTO)
         {
             try
             {
@@ -84,13 +84,13 @@ namespace GatesVilla_API.Controllers
                 {
                     return BadRequest(villaCreateDTO);
                 }
-                if (unitOfWork.Villa.Get(x => x.Name == villaCreateDTO.Name) != null)
+                if (await unitOfWork.Villa.GetAsync(x => x.Name == villaCreateDTO.Name) != null)
                 {
                     return BadRequest("Villa Already exist");
                 }
                 Villa newVilla = mapper.Map<Villa>(villaCreateDTO);
-                unitOfWork.Villa.Add(newVilla);
-                unitOfWork.SaveChanges();
+                await unitOfWork.Villa.AddAsync(newVilla);
+                await unitOfWork.SaveChangesAsync();
                 return Ok(villaCreateDTO);
             }
             catch (Exception ex)
@@ -103,7 +103,7 @@ namespace GatesVilla_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -112,13 +112,13 @@ namespace GatesVilla_API.Controllers
                     return BadRequest("Id must not equal 0");
 
                 }
-                var villa = unitOfWork.Villa.Get(x => x.Id == id);
+                var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
                 if (villa == null)
                 {
                     return NotFound($"Villa with ID {id} not found.");
                 }
-                unitOfWork.Villa.Delete(villa);
-                unitOfWork.SaveChanges();
+                await unitOfWork.Villa.DeleteAsync(villa);
+                await unitOfWork.SaveChangesAsync();
 
                 return NoContent();
             }
@@ -129,21 +129,23 @@ namespace GatesVilla_API.Controllers
         }
 
         [HttpPut("UpdateVilla")]
-        public IActionResult Update(int id, [FromBody] VillaUpdateDTO villaUpdateDTO)
+        public async Task<IActionResult> Update(int id, [FromBody] VillaUpdateDTO villaUpdateDTO)
         {
             try
             {
-                var foundedVilla = unitOfWork.Villa.Get(x => x.Id == id);
+                var foundedVilla = await unitOfWork.Villa.GetAsync(x => x.Id == id);
+
                 if (foundedVilla == null)
                 {
                     return NotFound($"Villa with ID {id} not found.");
                 }
 
                 mapper.Map(villaUpdateDTO, foundedVilla);
-                unitOfWork.Villa.Update(foundedVilla);
-                unitOfWork.SaveChanges();
+
+                await unitOfWork.Villa.UpdateAsync(foundedVilla);
 
                 return Ok($"Villa with ID {id} updated successfully.");
+
             }
             catch (Exception ex)
             {
@@ -157,11 +159,11 @@ namespace GatesVilla_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult PatchVilla(int id, [FromBody] JsonPatchDocument<VillaUpdateDTO> patchDocument)
+        public async Task<IActionResult> PatchVilla(int id, [FromBody] JsonPatchDocument<VillaUpdateDTO> patchDocument)
         {
             try
             {
-                var villa = unitOfWork.Villa.Get(x => x.Id == id);
+                var villa = unitOfWork.Villa.GetAsync(x => x.Id == id);
                 if (villa == null)
                 {
                     return NotFound($"Villa with ID {id} not found.");
@@ -177,9 +179,9 @@ namespace GatesVilla_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                mapper.Map(villaUpdateDTO, villa);
+                await mapper.Map(villaUpdateDTO, villa);
 
-                unitOfWork.SaveChanges();
+                await unitOfWork.SaveChangesAsync();
 
                 return Ok($"Villa with ID {id} patched successfully.");
             }

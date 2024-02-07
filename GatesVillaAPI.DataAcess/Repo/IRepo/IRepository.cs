@@ -9,11 +9,11 @@ namespace GatesVillaAPI.DataAcess.Repository.IRepo
 {
     public interface IRepository<T> where T : class
     {
-        T Get(Expression<Func<T, bool>> filter = null, string? includes = null);
-        IEnumerable<T> GetAll(Expression<Func<T,bool>>filter=null , string? includes =null );
-        void Add(T entity);
-        void Delete(T entity);
-        void Update(T entity);
+        Task<T> GetAsync(Expression<Func<T, bool>> filter = null, string? includes = null);
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T,bool>>filter=null , string? includes =null );
+        Task AddAsync(T entity);
+        Task DeleteAsync(T entity);
+        Task UpdateAsync(T entity);
 
 
     }
