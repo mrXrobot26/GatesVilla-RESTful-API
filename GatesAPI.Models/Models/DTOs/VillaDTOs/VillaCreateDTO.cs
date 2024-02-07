@@ -6,13 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GatesVillaAPI.Models.Models.DTOs
+namespace GatesVillaAPI.Models.Models.DTOs.VillaDTOs
 {
-    public class VillaDTO
+    public class VillaCreateDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+
         public string Name { get; set; }
         public string Details { get; set; }
         [Required]

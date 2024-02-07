@@ -60,5 +60,10 @@ namespace GatesVillaAPI.DataAcess.Repository
             }
             return query.ToList();
         }
+
+        public void Update(T entity)
+        {
+            DbSet.Update(entity);
+        }
     }
 }

@@ -63,7 +63,7 @@ namespace GatesVillaAPI.DataAcess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("villas");
+                    b.ToTable("villas", (string)null);
 
                     b.HasData(
                         new

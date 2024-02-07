@@ -13,6 +13,7 @@ namespace GatesVillaAPI.DataAcess.Repository.IRepo
         IEnumerable<T> GetAll(Expression<Func<T,bool>>filter=null , string? includes =null );
         void Add(T entity);
         void Delete(T entity);
+        void Update(T entity);
 
 
     }
