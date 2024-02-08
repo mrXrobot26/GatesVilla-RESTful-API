@@ -39,26 +39,18 @@ namespace GatesVilla_API.Controllers
                 var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
                 if (villa == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.IsSuccess = false;
-                    response.ErrorMessages = new List<string> { $"Villa with ID {id} not found." };
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
                     return NotFound(response);
                 }
 
                 VillaDTO villaDTO = mapper.Map<VillaDTO>(villa);
 
-                response.StatusCode = HttpStatusCode.OK;
-                response.ErrorMessages = null;
-                response.Result = villaDTO;
+                response.SetResponseInfo(HttpStatusCode.OK, null, villaDTO, true);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
@@ -73,30 +65,23 @@ namespace GatesVilla_API.Controllers
             try
             {
                 var villas = await unitOfWork.Villa.GetAllAsync();
-                if (villas == null || !villas.Any())
+                if (!villas.Any())
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string> { $"Villas not found." };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "Villas not found." }, null, false);
                     return NotFound(response);
                 }
 
                 List<VillaDTO> villasDTO = mapper.Map<List<VillaDTO>>(villas);
-                response.StatusCode = HttpStatusCode.OK;
-                response.ErrorMessages = null;
-                response.Result = villasDTO;
+                response.SetResponseInfo(HttpStatusCode.OK, null, villasDTO, true);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
+
 
 
         [HttpPost("AddVilla")]
@@ -110,37 +95,31 @@ namespace GatesVilla_API.Controllers
             {
                 if (villaCreateDTO == null)
                 {
-                    response.StatusCode = HttpStatusCode.BadRequest;
-                    response.ErrorMessages = new List<string> { $"Villas not Created." };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { "Villa not Created." }, null, false);
                     return BadRequest(response);
                 }
 
                 var existingVilla = await unitOfWork.Villa.GetAsync(x => x.Name == villaCreateDTO.Name);
                 if (existingVilla != null)
                 {
-                    response.StatusCode = HttpStatusCode.Conflict;
-                    response.IsSuccess = false;
-                    response.ErrorMessages = new List<string> { "Villa Already exists" };
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.Conflict, new List<string> { "Villa Already exists" }, null, false);
                     return Conflict(response);
                 }
 
                 Villa newVilla = mapper.Map<Villa>(villaCreateDTO);
                 await unitOfWork.Villa.AddAsync(newVilla);
                 await unitOfWork.SaveChangesAsync();
-                return Ok(villaCreateDTO);
+
+                response.SetResponseInfo(HttpStatusCode.OK, null, villaCreateDTO, true);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.InternalServerError;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.InternalServerError, new List<string> { $"{ex.Message}" }, null, false);
                 return response;
             }
         }
+
 
 
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
@@ -154,38 +133,26 @@ namespace GatesVilla_API.Controllers
             {
                 if (id == 0)
                 {
-                    response.StatusCode = HttpStatusCode.BadRequest;
-                    response.ErrorMessages = new List<string> { $"ID can't equal 0" };
-                    response.IsSuccess = false;
-                    response.Result = null;
-                    return BadRequest(response); 
+                    response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { "ID can't equal 0" }, null, false);
+                    return BadRequest(response);
                 }
 
                 var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
                 if (villa == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string> { $"Villa with ID {id} not found." };
-                    response.IsSuccess = false;
-                    response.Result = null;
-                    return NotFound(response); 
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
+                    return NotFound(response);
                 }
 
                 await unitOfWork.Villa.DeleteAsync(villa);
                 await unitOfWork.SaveChangesAsync();
 
-                response.StatusCode = HttpStatusCode.NoContent;
-                response.ErrorMessages = null;
-                response.Result = $"Villa {villa.Name} DELETED";
-
+                response.SetResponseInfo(HttpStatusCode.NoContent, null, new { Message = $"Villa {villa.Name} DELETED" }, true);
                 return response;
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.InternalServerError;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.InternalServerError, new List<string> { $"{ex.Message}" }, null, false);
                 return response;
             }
         }
@@ -202,43 +169,33 @@ namespace GatesVilla_API.Controllers
             {
                 if (id == 0)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber id 0" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "There is no villa with ID 0" }, null, false);
                     return NotFound(response);
                 }
+
                 var foundedVilla = await unitOfWork.Villa.GetAsync(x => x.Id == id);
 
                 if (foundedVilla == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.IsSuccess = false;
-                    response.ErrorMessages = new List<string> { $"Villa with ID {id} not found." };
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
                     return NotFound(response);
-
                 }
 
                 mapper.Map(villaUpdateDTO, foundedVilla);
 
                 unitOfWork.Villa.Update(foundedVilla);
                 await unitOfWork.SaveChangesAsync();
-                response.StatusCode = HttpStatusCode.NoContent;
-                response.IsSuccess = true;
-                response.Result = foundedVilla;
-                return Ok(response);
 
+                response.SetResponseInfo(HttpStatusCode.NoContent, null, foundedVilla, true);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
+
 
         [HttpPatch("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -249,37 +206,37 @@ namespace GatesVilla_API.Controllers
         {
             try
             {
-                var villa = unitOfWork.Villa.GetAsync(x => x.Id == id);
+                var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
                 if (villa == null)
                 {
-                    return NotFound($"Villa with ID {id} not found.");
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
+                    return NotFound(response);
                 }
 
                 VillaUpdateDTO villaUpdateDTO = mapper.Map<VillaUpdateDTO>(villa);
-
 
                 patchDocument.ApplyTo(villaUpdateDTO, ModelState);
 
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    response.SetResponseInfo(HttpStatusCode.BadRequest, ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList(), null, false);
+                    return BadRequest(response);
                 }
 
-                await mapper.Map(villaUpdateDTO, villa);
+                mapper.Map(villaUpdateDTO, villa);
 
                 await unitOfWork.SaveChangesAsync();
 
-                return Ok($"Villa with ID {id} patched successfully.");
+                response.SetResponseInfo(HttpStatusCode.OK, null, $"Villa with ID {id} patched successfully.", true);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
+
 
 
     }

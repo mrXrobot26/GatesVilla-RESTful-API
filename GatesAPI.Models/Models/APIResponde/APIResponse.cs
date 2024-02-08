@@ -13,5 +13,14 @@ namespace GatesVillaAPI.Models.Models.APIResponde
         public bool IsSuccess { get; set; } = true;
         public List<string> ErrorMessages { get; set; }
         public object Result { get; set; }
+
+        public void SetResponseInfo(HttpStatusCode statusCode, List<string> errorMessages, object result, bool isSuccess = true)
+        {
+            StatusCode = statusCode;
+            IsSuccess = isSuccess;
+            ErrorMessages = errorMessages ?? new List<string>();
+            Result = result;
+        }
+
     }
 }

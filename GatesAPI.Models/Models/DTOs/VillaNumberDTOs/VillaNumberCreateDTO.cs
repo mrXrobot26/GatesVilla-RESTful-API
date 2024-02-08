@@ -11,6 +11,8 @@ namespace GatesVillaAPI.Models.Models.DTOs.VillaDTOs
     public class VillaNumberCreateDTO
     {
         public int VillaNum { get; set; } 
-        public string SpeacialDetails { get; set; } 
+        public string SpeacialDetails { get; set; }
+        [Required]
+        public int VillaId { get; set; }
     }
 }

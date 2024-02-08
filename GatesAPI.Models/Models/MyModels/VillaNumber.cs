@@ -15,6 +15,10 @@ namespace GatesVillaAPI.Models.Models.MyModels
         public string SpeacialDetails { get; set; } 
         public DateTime CraetedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; }
+        [ForeignKey("villa")]
+        public int VillaId { get; set; }
+        [NotMapped]
+        public Villa villa { get; set; }
 
     }
 }

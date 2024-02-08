@@ -23,74 +23,60 @@ namespace GatesVilla_API.Controllers
             response = new();
         }
 
-        [HttpGet("{id:int}" , Name ="GetVillaNumberById")]
+        [HttpGet("{id:int}", Name = "GetVillaNumberById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<APIResponse>> Get(int id)
         {
-
             try
             {
-                if (id == 0)
+                if (id <= 0)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber id 0" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "Invalid VillaNumber ID" }, null, false);
                     return NotFound(response);
                 }
+
                 var villaNumber = await unitOfWork.VillaNumber.GetAsync(x => x.VillaNum == id);
                 if (villaNumber == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"VillaNumber with ID {id} not found" }, null, false);
                     return NotFound(response);
                 }
+
                 VillaNumberDTO villaNumberDTO = mapper.Map<VillaNumberDTO>(villaNumber);
-                response.Result = villaNumberDTO;
-                response.StatusCode = HttpStatusCode.OK;
-                response.ErrorMessages = null;
+                response.SetResponseInfo(HttpStatusCode.OK, null, villaNumberDTO, true);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
 
         [HttpGet("GetAllVillaNumber")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<APIResponse>> GetAll()
         {
-
             try
             {
-
                 var villaNumbers = await unitOfWork.VillaNumber.GetAllAsync();
                 if (villaNumbers == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumbers" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "There are no villaNumbers" }, null, false);
                     return NotFound(response);
                 }
-                List<VillaNumberDTO> villaNumbersDTO = mapper.Map<List<VillaNumberDTO>>(villaNumbers);
-                response.Result = villaNumbersDTO;
-                response.StatusCode = HttpStatusCode.OK;
-                response.ErrorMessages = null;
 
+                List<VillaNumberDTO> villaNumbersDTO = mapper.Map<List<VillaNumberDTO>>(villaNumbers);
+                response.SetResponseInfo(HttpStatusCode.OK, null, villaNumbersDTO, true);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
@@ -106,83 +92,68 @@ namespace GatesVilla_API.Controllers
             {
                 if (villaNumberCreateDTO == null)
                 {
-                    response.StatusCode = HttpStatusCode.BadRequest;
-                    response.ErrorMessages = new List<string> { $"VillaNumber not Created." };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { "VillaNumber not Created." }, null, false);
                     return BadRequest(response);
                 }
 
-                var existingVilla = await unitOfWork.VillaNumber.GetAsync(x => x.VillaNum == villaNumberCreateDTO.VillaNum);
-                if (existingVilla != null)
+                var existingVillaNumber = await unitOfWork.VillaNumber.GetAsync(x => x.VillaNum == villaNumberCreateDTO.VillaNum);
+                if (existingVillaNumber != null)
                 {
-                    response.StatusCode = HttpStatusCode.Conflict;
-                    response.IsSuccess = false;
-                    response.ErrorMessages = new List<string> { "VillaNumber Already exists" };
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.Conflict, new List<string> { "VillaNumber Already exists" }, null, false);
+                    return Conflict(response);
+                }
+
+                var existingVilla = await unitOfWork.Villa.GetAsync(x => x.Id == villaNumberCreateDTO.VillaId);
+                if (existingVilla == null)
+                {
+                    response.SetResponseInfo(HttpStatusCode.Conflict, new List<string> { $"No Villa Has Id {villaNumberCreateDTO.VillaId}" }, null, false);
                     return Conflict(response);
                 }
 
                 VillaNumber newVillaNumber = mapper.Map<VillaNumber>(villaNumberCreateDTO);
                 await unitOfWork.VillaNumber.AddAsync(newVillaNumber);
                 await unitOfWork.SaveChangesAsync();
-                response.StatusCode = HttpStatusCode.OK;
-                response.Result = newVillaNumber;
-                response.ErrorMessages = null;
+
+                response.SetResponseInfo(HttpStatusCode.OK, null, newVillaNumber, true);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.InternalServerError;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.InternalServerError, new List<string> { $"{ex.Message}" }, null, false);
                 return response;
             }
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         [HttpPut("{id:int}", Name = "UpdateVillaNumber")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<APIResponse>> Update(int id, [FromBody] VillaNumberUpdateDTO villaNumberUpdate)
         {
-
             try
             {
-                if (id == 0)
+                if (id <= 0)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber id 0" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "Invalid VillaNumber ID" }, null, false);
                     return NotFound(response);
                 }
+
                 var villaNumber = await unitOfWork.VillaNumber.GetAsync(x => x.VillaNum == id);
                 if (villaNumber == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"VillaNumber with ID {id} not found" }, null, false);
                     return NotFound(response);
                 }
-                mapper.Map(villaNumberUpdate, villaNumber); 
-                response.StatusCode = HttpStatusCode.OK;
-                response.ErrorMessages = null;
-                response.Result = villaNumber;
+                var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
+                if (villa == null)
+                {
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found" }, null, false);
+                    return NotFound(response);
+                }
+
+                mapper.Map(villaNumberUpdate, villaNumber);
+                response.SetResponseInfo(HttpStatusCode.OK, null, villaNumber, true);
                 unitOfWork.VillaNumber.Update(villaNumber);
                 await unitOfWork.SaveChangesAsync();
 
@@ -190,54 +161,42 @@ namespace GatesVilla_API.Controllers
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
 
 
-
         [HttpDelete("{id:int}", Name = "DeleteVillaNumber")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<APIResponse>> Delete(int id)
         {
-
             try
             {
-                if (id == 0)
+                if (id <= 0)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber id 0" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "Invalid VillaNumber ID" }, null, false);
                     return NotFound(response);
                 }
+
                 var villaNumber = await unitOfWork.VillaNumber.GetAsync(x => x.VillaNum == id);
                 if (villaNumber == null)
                 {
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    response.ErrorMessages = new List<string>() { "there is no villaNumber" };
-                    response.IsSuccess = false;
-                    response.Result = null;
+                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"VillaNumber with ID {id} not found" }, null, false);
                     return NotFound(response);
                 }
+
                 await unitOfWork.VillaNumber.DeleteAsync(villaNumber);
                 await unitOfWork.SaveChangesAsync();
 
-                response.StatusCode = HttpStatusCode.NoContent;
-                response.ErrorMessages = null;
-                response.Result = $"Villa {villaNumber.VillaNum} DELETED";
-
+                response.SetResponseInfo(HttpStatusCode.NoContent, null, $"Villa {villaNumber.VillaNum} DELETED", true);
                 return response;
             }
             catch (Exception ex)
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
-                response.IsSuccess = false;
-                response.ErrorMessages = new List<string> { $"{ex.Message}" };
-                response.Result = null;
+                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
                 return BadRequest(response);
             }
         }
