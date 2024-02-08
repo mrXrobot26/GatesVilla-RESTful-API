@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GatesVillaAPI.Models.Models
+namespace GatesVillaAPI.Models.Models.MyModels
 {
     public class Villa
     {

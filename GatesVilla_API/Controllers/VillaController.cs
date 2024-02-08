@@ -2,9 +2,9 @@
 using Azure;
 using GatesVillaAPI.DataAcess.Data;
 using GatesVillaAPI.DataAcess.Repo.IRepo;
-using GatesVillaAPI.Models.Models;
 using GatesVillaAPI.Models.Models.APIResponde;
 using GatesVillaAPI.Models.Models.DTOs.VillaDTOs;
+using GatesVillaAPI.Models.Models.MyModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

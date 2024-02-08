@@ -1,4 +1,4 @@
-﻿using GatesVillaAPI.Models.Models;
+﻿using GatesVillaAPI.Models.Models.MyModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace GatesVillaAPI.DataAcess.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Villa> villas { get; set; }
+        public DbSet<VillaNumber> villaNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

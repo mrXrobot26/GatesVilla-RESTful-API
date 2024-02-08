@@ -12,11 +12,14 @@ namespace GatesVillaAPI.DataAcess.Repo
     {
         public IVillaRepository Villa { get; private set; }
 
+        public IVillaNumberRepository VillaNumber { get; private set; }
+
         private readonly ApplicationDbContext db;
         public UnitOfWork(ApplicationDbContext db )
         {
             this.db = db;
             Villa = new VillaRepository( db );
+            VillaNumber = new VillaNumberRepository( db );
         }
 
         public async Task SaveChangesAsync()

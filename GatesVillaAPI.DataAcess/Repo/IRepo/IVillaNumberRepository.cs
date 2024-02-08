@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace GatesVillaAPI.DataAcess.Repo.IRepo
 {
-    public interface IVillaRepository : IRepository<Villa>
+    public interface IVillaNumberRepository : IRepository<VillaNumber>
     {
-        Task UpdateAsync(Villa entity);
-
-
+        Task UpdateAsync (VillaNumber villaNumber);
     }
 }

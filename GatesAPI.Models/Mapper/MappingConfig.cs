@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using GatesVillaAPI.Models.Models;
 using GatesVillaAPI.Models.Models.DTOs.VillaDTOs;
+using GatesVillaAPI.Models.Models.MyModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,9 @@ namespace GatesVillaAPI.Models.Mapper
     {
         public MappingConfig()
         {
-            CreateMap<Villa,VillaDTO>().ReverseMap();
-            CreateMap<Villa,VillaCreateDTO>().ReverseMap();
-            CreateMap<Villa,VillaUpdateDTO>().ReverseMap();
+            CreateMap<Villa,VillaNumberDTO>().ReverseMap();
+            CreateMap<Villa,VillaNumberCreateDTO>().ReverseMap();
+            CreateMap<Villa,VillaNumberUpdateDTO>().ReverseMap();
         }
     }
 }

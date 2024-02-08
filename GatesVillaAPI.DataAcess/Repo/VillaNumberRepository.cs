@@ -10,18 +10,17 @@ using System.Threading.Tasks;
 
 namespace GatesVillaAPI.DataAcess.Repo
 {
-    public class VillaRepository : Repository<Villa>, IVillaRepository
+    public class VillaNumberRepository : Repository<VillaNumber>, IVillaNumberRepository
     {
         private readonly ApplicationDbContext db;
-        public VillaRepository(ApplicationDbContext db) : base(db)
+
+        public VillaNumberRepository(ApplicationDbContext db) :base(db) 
         {
             this.db = db;
         }
-
-        public async Task UpdateAsync(Villa entity)
+        public async Task UpdateAsync(VillaNumber villaNumber)
         {
-            entity.UpdatedDate = DateTime.Now;
-            db.villas.Update(entity);
+            db.villaNumbers.Update(villaNumber);
             await db.SaveChangesAsync();
         }
     }
