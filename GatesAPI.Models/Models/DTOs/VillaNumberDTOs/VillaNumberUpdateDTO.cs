@@ -10,7 +10,6 @@ namespace GatesVillaAPI.Models.Models.DTOs.VillaDTOs
 {
     public class VillaNumberUpdateDTO
     {
-        public int VillaNum { get; set; }
         public string SpeacialDetails { get; set; }
     }
 }

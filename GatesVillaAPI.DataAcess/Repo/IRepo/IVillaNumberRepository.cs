@@ -10,6 +10,6 @@ namespace GatesVillaAPI.DataAcess.Repo.IRepo
 {
     public interface IVillaNumberRepository : IRepository<VillaNumber>
     {
-        Task UpdateAsync (VillaNumber villaNumber);
+        void Update (VillaNumber villaNumber);
     }
 }

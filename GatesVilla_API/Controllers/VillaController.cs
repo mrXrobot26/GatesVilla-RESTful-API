@@ -200,6 +200,14 @@ namespace GatesVilla_API.Controllers
         {
             try
             {
+                if (id == 0)
+                {
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.ErrorMessages = new List<string>() { "there is no villaNumber id 0" };
+                    response.IsSuccess = false;
+                    response.Result = null;
+                    return NotFound(response);
+                }
                 var foundedVilla = await unitOfWork.Villa.GetAsync(x => x.Id == id);
 
                 if (foundedVilla == null)
@@ -214,9 +222,11 @@ namespace GatesVilla_API.Controllers
 
                 mapper.Map(villaUpdateDTO, foundedVilla);
 
-                await unitOfWork.Villa.UpdateAsync(foundedVilla);
+                unitOfWork.Villa.Update(foundedVilla);
+                await unitOfWork.SaveChangesAsync();
                 response.StatusCode = HttpStatusCode.NoContent;
                 response.IsSuccess = true;
+                response.Result = foundedVilla;
                 return Ok(response);
 
             }

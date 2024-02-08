@@ -18,10 +18,10 @@ namespace GatesVillaAPI.DataAcess.Repo
         {
             this.db = db;
         }
-        public async Task UpdateAsync(VillaNumber villaNumber)
+        public void Update(VillaNumber villaNumber)
         {
+            villaNumber.UpdatedDate = DateTime.Now;
             db.villaNumbers.Update(villaNumber);
-            await db.SaveChangesAsync();
         }
     }
 }

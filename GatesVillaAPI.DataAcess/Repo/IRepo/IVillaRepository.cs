@@ -10,8 +10,7 @@ namespace GatesVillaAPI.DataAcess.Repo.IRepo
 {
     public interface IVillaRepository : IRepository<Villa>
     {
-        Task UpdateAsync(Villa entity);
-
+        void Update(Villa entity);
 
     }
 }

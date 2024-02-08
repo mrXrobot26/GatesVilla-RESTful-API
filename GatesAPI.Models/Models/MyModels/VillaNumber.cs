@@ -13,7 +13,7 @@ namespace GatesVillaAPI.Models.Models.MyModels
         [Key , DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int VillaNum { get; set; }
         public string SpeacialDetails { get; set; } 
-        public DateTime CraetedDate { get; set; }
+        public DateTime CraetedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; }
 
     }
