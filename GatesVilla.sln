@@ -5,9 +5,17 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVilla_API", "GatesVilla_API\GatesVilla_API.csproj", "{31962C3D-56DF-46C5-92E5-1D403DEFD63D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatesVillaAPI.Models", "GatesAPI.Models\GatesVillaAPI.Models.csproj", "{C7987517-A715-44D3-9B1E-A54D632A93AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVillaAPI.Models", "GatesAPI.Models\GatesVillaAPI.Models.csproj", "{C7987517-A715-44D3-9B1E-A54D632A93AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatesVillaAPI.DataAcess", "GatesVillaAPI.DataAcess\GatesVillaAPI.DataAcess.csproj", "{99734961-1420-41E0-8961-CC88340AF8D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVillaAPI.DataAcess", "GatesVillaAPI.DataAcess\GatesVillaAPI.DataAcess.csproj", "{99734961-1420-41E0-8961-CC88340AF8D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatesVilla_Web", "GatesVilla_Web\GatesVilla_Web.csproj", "{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatesVilla_Utility", "GatesVilla_Utility\GatesVilla_Utility.csproj", "{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClassLibrary", "ClassLibrary", "{76FD6D17-7AC4-4645-8DCE-1EA8F8B6D048}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MainProjects", "MainProjects", "{2439373A-1745-484A-BDC4-6C50FA1155FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +35,24 @@ Global
 		{99734961-1420-41E0-8961-CC88340AF8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99734961-1420-41E0-8961-CC88340AF8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99734961-1420-41E0-8961-CC88340AF8D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{31962C3D-56DF-46C5-92E5-1D403DEFD63D} = {2439373A-1745-484A-BDC4-6C50FA1155FD}
+		{C7987517-A715-44D3-9B1E-A54D632A93AF} = {76FD6D17-7AC4-4645-8DCE-1EA8F8B6D048}
+		{99734961-1420-41E0-8961-CC88340AF8D1} = {76FD6D17-7AC4-4645-8DCE-1EA8F8B6D048}
+		{C2A7B82D-2A28-4189-8E86-7CC93572B8CD} = {2439373A-1745-484A-BDC4-6C50FA1155FD}
+		{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750} = {76FD6D17-7AC4-4645-8DCE-1EA8F8B6D048}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {362E7B27-DBE3-4272-9DB5-F4C13FF44608}

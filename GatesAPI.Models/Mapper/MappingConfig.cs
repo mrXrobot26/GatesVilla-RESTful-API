@@ -20,6 +20,13 @@ namespace GatesVillaAPI.Models.Mapper
             CreateMap<VillaNumber, VillaNumberDTO>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberCreateDTO>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberUpdateDTO>().ReverseMap();
+
+            CreateMap<VillaCreateDTO,VillaDTO>().ReverseMap();
+            CreateMap<VillaUpdateDTO,VillaDTO>().ReverseMap();
+
+            CreateMap<VillaNumberCreateDTO, VillaNumberDTO>().ReverseMap();
+            CreateMap<VillaNumberUpdateDTO, VillaNumberDTO>().ReverseMap();
+
         }
     }
 }
