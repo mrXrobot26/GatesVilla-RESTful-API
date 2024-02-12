@@ -1,3 +1,5 @@
+using GatesVilla_Web.Services;
+using GatesVilla_Web.Services.IServices;
 using GatesVillaAPI.Models.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+builder.Services.AddHttpClient<IVillaService, VillaService>();
+builder.Services.AddScoped<IVillaService, VillaService>();
 
 
 

@@ -12,15 +12,15 @@ using System.Net;
 
 namespace GatesVilla_API.Controllers
 {
-    [Route("api/VillaController")]
+    [Route("api/villaAPI")]
     [ApiController]
-    public class VillaController : ControllerBase
+    public class VillaAPIController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         protected APIResponse response;
 
-        public VillaController(IUnitOfWork unitOfWork,IMapper mapper)
+        public VillaAPIController(IUnitOfWork unitOfWork,IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;

@@ -22,38 +22,36 @@ namespace GatesVilla_Web.Services
             try
             {
                 var client = httpClient.CreateClient("VillaApi");
-                HttpRequestMessage msg = new HttpRequestMessage();
-                msg.Headers.Add("Content-Type", "application/json");
-                msg.RequestUri = new Uri(apiRequest.Url);
-                if (apiRequest.Data != null)
+                HttpRequestMessage requestMessage = new HttpRequestMessage();
+                requestMessage.Headers.Add("Accept", "application/json");
+                requestMessage.RequestUri = new Uri(apiRequest.Url);
+                if (apiRequest.Data!=null)
                 {
-                    msg.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
+                    requestMessage.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data));
                 }
                 switch (apiRequest.ApiType)
                 {
+
                     case SD.APIType.POST:
-                        msg.Method = HttpMethod.Post;
+                        requestMessage.Method = HttpMethod.Post;
                         break;
                     case SD.APIType.PUT:
-                        msg.Method = HttpMethod.Put;
+                        requestMessage.Method = HttpMethod.Put;
                         break;
                     case SD.APIType.DELETE:
-                        msg.Method = HttpMethod.Delete;
+                        requestMessage.Method = HttpMethod.Delete;
                         break;
                     default:
-                        msg.Method = HttpMethod.Get;
+                        requestMessage.Method = HttpMethod.Get;
                         break;
                 }
 
+
                 HttpResponseMessage responseMessage = null;
-
-                responseMessage = await client.SendAsync(msg);
-
+                responseMessage = await client.SendAsync(requestMessage);
                 var apiContant = await responseMessage.Content.ReadAsStringAsync();
                 var APIResponse = JsonConvert.DeserializeObject<T>(apiContant);
                 return APIResponse;
-
-
             }
             catch (Exception ex)
             {
@@ -66,7 +64,6 @@ namespace GatesVilla_Web.Services
                 var APIResponse = JsonConvert.DeserializeObject<T>(res);
                 return APIResponse;
             }
-        
         }
     }
 }
