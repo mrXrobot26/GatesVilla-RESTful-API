@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GatesVilla_Web.Services;
 using GatesVilla_Web.Services.IServices;
 using GatesVillaAPI.Models.Models.APIResponde;
 using GatesVillaAPI.Models.Models.DTOs.VillaDTOs;
@@ -33,6 +34,7 @@ namespace GatesVilla_Web.Controllers
         { 
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateVilla(VillaCreateDTO villaCreate)
@@ -44,6 +46,30 @@ namespace GatesVilla_Web.Controllers
 
             }
             return View(villaCreate);
+        }
+		public async Task<IActionResult> UpdateVilla(int villaId)
+		{
+			var response = await villaServices.GetAsync<APIResponse>(villaId);
+			if (response != null && response.IsSuccess)
+			{
+				VillaDTO model = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+				return View(mapper.Map<VillaUpdateDTO>(model));
+			}
+			return NotFound();
+		}
+
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateVilla(VillaUpdateDTO villaUpdate)
+        {
+            var response = await villaServices.UpdateAsync<APIResponse>(villaUpdate);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(IndexVilla));
+
+            }
+            return View(villaUpdate);
         }
 
 

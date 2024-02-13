@@ -10,8 +10,8 @@ namespace GatesVillaAPI.Models.Models.DTOs.VillaDTOs
 {
     public class VillaUpdateDTO
     {
-
-        public string Name { get; set; }
+		public int Id { get; set; }
+		public string Name { get; set; }
         public string Details { get; set; }
         [Required]
         public double Rate { get; set; }

@@ -27,11 +27,11 @@ namespace GatesVilla_Web.Services
                 requestMessage.RequestUri = new Uri(apiRequest.Url);
                 if (apiRequest.Data!=null)
                 {
-                    requestMessage.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data));
+                    requestMessage.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
                 }
+
                 switch (apiRequest.ApiType)
                 {
-
                     case SD.APIType.POST:
                         requestMessage.Method = HttpMethod.Post;
                         break;
@@ -45,7 +45,6 @@ namespace GatesVilla_Web.Services
                         requestMessage.Method = HttpMethod.Get;
                         break;
                 }
-
 
                 HttpResponseMessage responseMessage = null;
                 responseMessage = await client.SendAsync(requestMessage);

@@ -158,46 +158,50 @@ namespace GatesVilla_API.Controllers
         }
 
 
-        [HttpPut("UpdateVilla")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> Update(int id, [FromBody] VillaUpdateDTO villaUpdateDTO)
-        {
-            try
-            {
-                if (id == 0)
-                {
-                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "There is no villa with ID 0" }, null, false);
-                    return NotFound(response);
-                }
+		[HttpPut("UpdateVilla/{id:int}")]
+		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+		public async Task<ActionResult<APIResponse>> Update(int id, [FromBody] VillaUpdateDTO villaUpdateDTO)
+		{
+			try
+			{
+				if (id == 0)
+				{
+					response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "There is no villa with ID 0" }, null, false);
+					return NotFound(response);
+				}
 
-                var foundedVilla = await unitOfWork.Villa.GetAsync(x => x.Id == id);
+				var foundedVilla = await unitOfWork.Villa.GetAsync(x => x.Id == id);
+                villaUpdateDTO.Id = foundedVilla.Id;
 
-                if (foundedVilla == null)
-                {
-                    response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
-                    return NotFound(response);
-                }
+				if (foundedVilla == null)
+				{
+					response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
+					return NotFound(response);
+				}
 
-                mapper.Map(villaUpdateDTO, foundedVilla);
+				// Use the configured mapper
+				mapper.Map(villaUpdateDTO, foundedVilla);
 
-                unitOfWork.Villa.Update(foundedVilla);
-                await unitOfWork.SaveChangesAsync();
+				unitOfWork.Villa.Update(foundedVilla);
+				await unitOfWork.SaveChangesAsync();
 
-                response.SetResponseInfo(HttpStatusCode.NoContent, null, foundedVilla, true);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
-                return BadRequest(response);
-            }
-        }
+				response.SetResponseInfo(HttpStatusCode.NoContent, null, foundedVilla, true);
+				return Ok(response);
+			}
+			catch (Exception ex)
+			{
+				response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { $"{ex.Message}" }, null, false);
+				return BadRequest(response);
+			}
+		}
 
 
-        [HttpPatch("{id:int}")]
+
+
+		[HttpPatch("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
