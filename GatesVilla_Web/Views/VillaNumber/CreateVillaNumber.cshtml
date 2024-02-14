@@ -1,0 +1,43 @@
+﻿@model GatesVillaAPI.Models.Models.DTOs.VillaDTOs.VillaNumberCreateDTO
+
+@{
+    ViewData["Title"] = "CreateVillaNumber";
+}
+
+<h1>CreateVillaNumber</h1>
+
+<h4>VillaNumberCreateDTO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateVillaNumber">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="VillaNum" class="control-label"></label>
+                <input asp-for="VillaNum" class="form-control" />
+                <span asp-validation-for="VillaNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpeacialDetails" class="control-label"></label>
+                <input asp-for="SpeacialDetails" class="form-control" />
+                <span asp-validation-for="SpeacialDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VillaId" class="control-label"></label>
+                <input asp-for="VillaId" class="form-control" />
+                <span asp-validation-for="VillaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

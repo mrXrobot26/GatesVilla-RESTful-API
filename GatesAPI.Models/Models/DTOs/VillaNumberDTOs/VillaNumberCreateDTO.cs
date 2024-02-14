@@ -5,14 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GatesVillaAPI.Models.Models.DTOs.VillaDTOs
 {
     public class VillaNumberCreateDTO
     {
-        public int VillaNum { get; set; } 
+        public int VillaNum { get; set; }
         public string SpeacialDetails { get; set; }
         [Required]
         public int VillaId { get; set; }
+        public List<SelectListItem> AvailableVillas { get; set; }
     }
+
 }
