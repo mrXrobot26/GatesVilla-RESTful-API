@@ -17,7 +17,6 @@ namespace GatesVillaAPI.Models.Models.MyModels
         public DateTime UpdatedDate { get; set; }
         [ForeignKey("villa")]
         public int VillaId { get; set; }
-        [NotMapped]
         public Villa villa { get; set; }
 
     }

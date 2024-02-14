@@ -9,7 +9,7 @@ using System.Net;
 
 namespace GatesVilla_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/VillaNumberAPI")]
     [ApiController]
     public class VillaNumberController : ControllerBase
     {
@@ -63,7 +63,7 @@ namespace GatesVilla_API.Controllers
         {
             try
             {
-                var villaNumbers = await unitOfWork.VillaNumber.GetAllAsync();
+                var villaNumbers = await unitOfWork.VillaNumber.GetAllAsync(includes : "villa");
                 if (villaNumbers == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "There are no villaNumbers" }, null, false);

@@ -10,24 +10,24 @@ namespace GatesVilla_Web.Controllers
 {
     public class VillaNumberController : Controller
     {
-        private readonly IVillaService villaNumberServices;
+        private readonly IVillaNumberService villaNumberServices;
         private readonly IMapper mapper;
 
-        public VillaNumberController(IVillaService villaServices, IMapper mapper)
+        public VillaNumberController(IVillaNumberService villaNumberServices, IMapper mapper)
         {
-            this.villaNumberServices = villaServices;
+            this.villaNumberServices = villaNumberServices;
             this.mapper = mapper;
         }
 
         public async Task<IActionResult> IndexVillaNumber()
         {
-            List<VillaNumberDTO> villaList = new();
+            List<VillaNumberDTO> villaNumberList = new();
             var response = await villaNumberServices.GetAllAsync<APIResponse>();
             if (response != null && response.IsSuccess)
             {
-                villaList = JsonConvert.DeserializeObject<List<VillaNumberDTO>>(Convert.ToString(response.Result));
+                villaNumberList = JsonConvert.DeserializeObject<List<VillaNumberDTO>>(Convert.ToString(response.Result));
             }
-            return View(villaList);
+            return View(villaNumberList);
         }
 
 

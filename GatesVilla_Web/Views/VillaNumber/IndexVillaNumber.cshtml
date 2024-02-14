@@ -1,47 +1,41 @@
 ﻿@model IEnumerable<GatesVillaAPI.Models.Models.DTOs.VillaDTOs.VillaNumberDTO>
 
-@{
-    ViewData["Title"] = "IndexVillaNumber";
-}
+<br />
+<div class="container p-4 border">
+	<div class="row pb-2">
+		<div class="col">
+			<h1 class="text-primary">Villa Number List</h1>
+		</div>
+		<div class="col text-end pt-1">
+			<a asp-controller="VillaNumber" asp-action="CreateVillaNumber" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i> Create New Villa Number</a>
+		</div>
+	</div>
 
-<h1>IndexVillaNumber</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Villa Name
+				</th>
+				<th>
+					Villa Number
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>@item.Villa.Name</td>
+					<td>@item.VillaNum</td>
+					<td>
+						<a asp-controller="Villa" asp-action="UpdateVillaNumber" asp-route-villaNo="@item.VillaNum" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+						<a asp-controller="Villa" asp-action="DeleteVillaNumber" asp-route-villaNo="@item.VillaNum" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.VillaNum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpeacialDetails)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VillaId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.VillaNum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpeacialDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VillaId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+</div>
