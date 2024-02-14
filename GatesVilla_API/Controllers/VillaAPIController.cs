@@ -182,7 +182,6 @@ namespace GatesVilla_API.Controllers
 					return NotFound(response);
 				}
 
-				// Use the configured mapper
 				mapper.Map(villaUpdateDTO, foundedVilla);
 
 				unitOfWork.Villa.Update(foundedVilla);

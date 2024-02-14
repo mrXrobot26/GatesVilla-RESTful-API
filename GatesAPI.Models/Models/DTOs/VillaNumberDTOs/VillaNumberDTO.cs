@@ -14,5 +14,7 @@ namespace GatesVillaAPI.Models.Models.DTOs.VillaDTOs
         public string SpeacialDetails { get; set; }
         [Required]
         public int VillaId { get; set; }
+        public VillaDTO Villa { get; set; }
+
     }
 }
