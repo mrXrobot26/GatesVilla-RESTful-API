@@ -45,18 +45,36 @@ namespace GatesVilla_Web.Services
                         requestMessage.Method = HttpMethod.Get;
                         break;
                 }
-
                 HttpResponseMessage responseMessage = null;
                 responseMessage = await client.SendAsync(requestMessage);
                 var apiContant = await responseMessage.Content.ReadAsStringAsync();
+                try
+                {
+                    APIResponse ApiResponse = JsonConvert.DeserializeObject<APIResponse>(apiContant);
+                    if (apiResponse.StatusCode == System.Net.HttpStatusCode.BadRequest
+                        || apiResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        ApiResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                        ApiResponse.IsSuccess = false;
+                        var res = JsonConvert.SerializeObject(ApiResponse);
+                        var returnObj = JsonConvert.DeserializeObject<T>(res);
+                        return returnObj;
+                    }
+                }
+                catch (Exception e)
+                {
+                    var exceptionResponse = JsonConvert.DeserializeObject<T>(apiContant);
+                    return exceptionResponse;
+                }
                 var APIResponse = JsonConvert.DeserializeObject<T>(apiContant);
                 return APIResponse;
+
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 var dto = new APIResponse
                 {
-                    ErrorMessages = new List<string> { ex.Message },
+                    ErrorMessages = new List<string> { Convert.ToString(e.Message) },
                     IsSuccess = false
                 };
                 var res = JsonConvert.SerializeObject(dto);

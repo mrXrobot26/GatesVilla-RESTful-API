@@ -61,7 +61,7 @@ namespace GatesVilla_Web.Services
             {
                 ApiType = SD.APIType.PUT,
                 Data = dto,
-                Url = villaUrl + "/api/VillaNumberAPI/UpdateVilla/" + dto.Id
+                Url = villaUrl + "/api/VillaNumberAPI/" + dto.VillaNum
             });
         }
     }

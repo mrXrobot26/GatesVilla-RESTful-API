@@ -93,6 +93,8 @@ namespace GatesVilla_API.Controllers
                 if (villaNumberCreateDTO == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { "VillaNumber not Created." }, null, false);
+                    ModelState.AddModelError("ErrorMessages", "VillaNumber not Created.");
+
                     return BadRequest(response);
                 }
 
@@ -100,6 +102,7 @@ namespace GatesVilla_API.Controllers
                 if (existingVillaNumber != null)
                 {
                     response.SetResponseInfo(HttpStatusCode.Conflict, new List<string> { "VillaNumber Already exists" }, null, false);
+                    ModelState.AddModelError("ErrorMessages", "Villa Number already Exists!");
                     return Conflict(response);
                 }
 
@@ -107,6 +110,7 @@ namespace GatesVilla_API.Controllers
                 if (existingVilla == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.Conflict, new List<string> { $"No Villa Has Id {villaNumberCreateDTO.VillaId}" }, null, false);
+                    ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid!");
                     return Conflict(response);
                 }
 
@@ -140,18 +144,19 @@ namespace GatesVilla_API.Controllers
                 }
 
                 var villaNumber = await unitOfWork.VillaNumber.GetAsync(x => x.VillaNum == id);
+
                 if (villaNumber == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"VillaNumber with ID {id} not found" }, null, false);
                     return NotFound(response);
                 }
-                var villa = await unitOfWork.Villa.GetAsync(x => x.Id == id);
+                var villa = await unitOfWork.Villa.GetAsync(x => x.Id == villaNumber.VillaId);
                 if (villa == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found" }, null, false);
                     return NotFound(response);
                 }
-
+                villaNumberUpdate.VillaNum = id;
                 mapper.Map(villaNumberUpdate, villaNumber);
                 response.SetResponseInfo(HttpStatusCode.OK, null, villaNumber, true);
                 unitOfWork.VillaNumber.Update(villaNumber);

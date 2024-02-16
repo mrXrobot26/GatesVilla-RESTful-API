@@ -40,6 +40,7 @@ namespace GatesVilla_API.Controllers
                 if (villa == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
+                    ModelState.AddModelError("ErrorMessages", $"Villa with ID {id} not found.");
                     return NotFound(response);
                 }
 
@@ -68,6 +69,7 @@ namespace GatesVilla_API.Controllers
                 if (!villas.Any())
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "Villas not found." }, null, false);
+                    ModelState.AddModelError("ErrorMessages", "Villas not found.");
                     return NotFound(response);
                 }
 
@@ -96,6 +98,7 @@ namespace GatesVilla_API.Controllers
                 if (villaCreateDTO == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.BadRequest, new List<string> { "Villa not Created." }, null, false);
+                    ModelState.AddModelError("ErrorMessages", "Villa not Created.");
                     return BadRequest(response);
                 }
 
@@ -103,6 +106,7 @@ namespace GatesVilla_API.Controllers
                 if (existingVilla != null)
                 {
                     response.SetResponseInfo(HttpStatusCode.Conflict, new List<string> { "Villa Already exists" }, null, false);
+                    ModelState.AddModelError("ErrorMessages", "Villa Already exists");
                     return Conflict(response);
                 }
 
@@ -141,6 +145,7 @@ namespace GatesVilla_API.Controllers
                 if (villa == null)
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { $"Villa with ID {id} not found." }, null, false);
+                    ModelState.AddModelError("ErrorMessages", $"Villa with ID {id} not found.");
                     return NotFound(response);
                 }
 
@@ -170,6 +175,7 @@ namespace GatesVilla_API.Controllers
 				if (id == 0)
 				{
 					response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "There is no villa with ID 0" }, null, false);
+
 					return NotFound(response);
 				}
 
