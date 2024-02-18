@@ -10,6 +10,7 @@ namespace GatesVillaAPI.DataAcess.Repo.IRepo
     {
         IVillaRepository Villa { get; }
         IVillaNumberRepository VillaNumber { get; }
+        IUserRepository User { get; }
         Task SaveChangesAsync();
     }
 }

@@ -14,6 +14,7 @@ namespace GatesVillaAPI.DataAcess.Data
 
         public DbSet<Villa> villas { get; set; }
         public DbSet<VillaNumber> villaNumbers { get; set; }
+        public DbSet<LocalUser> localUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
