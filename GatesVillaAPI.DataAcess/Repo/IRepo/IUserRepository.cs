@@ -10,7 +10,7 @@ namespace GatesVillaAPI.DataAcess.Repo.IRepo
 {
     public interface IUserRepository
     {
-        bool IsUniqe(string username);
+        Task<bool> IsUniqe(string username);
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
         Task<LocalUser> Register(RegisterRequestDTO registerRequestDTO);
     }

@@ -25,7 +25,7 @@ namespace GatesVillaAPI.DataAcess.Repo
             this.configuration = configuration;
             securityKay = configuration.GetValue<string>("ApiSettings:Secret");
         }
-        public bool IsUniqe(string username)
+        public async Task<bool> IsUniqe(string username)
         {
             var matchUsername = db.localUsers.FirstOrDefault(x => x.UserName == username);
             if (matchUsername == null)
@@ -43,7 +43,11 @@ namespace GatesVillaAPI.DataAcess.Repo
             var user = db.localUsers.FirstOrDefault(x => x.UserName == loginRequestDTO.UserName && x.Password == loginRequestDTO.Password);
             if (user == null)
             {
-                return null;
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = null,
+                };
             }
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
