@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GatesVilla_Utility;
 using GatesVilla_Web.Services;
 using GatesVilla_Web.Services.IServices;
 using GatesVillaAPI.Models.Models.APIResponde;
@@ -22,7 +23,7 @@ namespace GatesVilla_Web.Controllers
         public async Task<IActionResult> IndexVilla()
         {
             List<VillaDTO> villaList = new();
-            var response = await villaServices.GetAllAsync<APIResponse>();
+            var response = await villaServices.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
             if (response != null && response.IsSuccess)
             {
                 villaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result));
@@ -39,7 +40,7 @@ namespace GatesVilla_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateVilla(VillaCreateDTO villaCreate)
         {
-            var response = await villaServices.CreateAsync<APIResponse>(villaCreate);
+            var response = await villaServices.CreateAsync<APIResponse>(villaCreate, HttpContext.Session.GetString(SD.SessionToken));
             if (response != null && response.IsSuccess)
             {
                 return RedirectToAction(nameof(IndexVilla));
@@ -51,7 +52,7 @@ namespace GatesVilla_Web.Controllers
 
         public async Task<IActionResult> UpdateVilla(int villaId) 
         { 
-            var response = await villaServices.GetAsync<APIResponse>(villaId);
+            var response = await villaServices.GetAsync<APIResponse>(villaId, HttpContext.Session.GetString(SD.SessionToken));
             if (response != null && response.IsSuccess)
             {
                 VillaDTO model = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
@@ -67,7 +68,7 @@ namespace GatesVilla_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-				var response = await villaServices.UpdateAsync<APIResponse>(villaUpdateDTO);
+				var response = await villaServices.UpdateAsync<APIResponse>(villaUpdateDTO, HttpContext.Session.GetString(SD.SessionToken));
 				if (response != null && response.IsSuccess)
 				{
 					return RedirectToAction(nameof(IndexVilla));
@@ -80,7 +81,7 @@ namespace GatesVilla_Web.Controllers
 
         public async Task<IActionResult> DeleteVilla(int villaId)
         {
-            var response = await villaServices.GetAsync<APIResponse>(villaId);
+            var response = await villaServices.GetAsync<APIResponse>(villaId, HttpContext.Session.GetString(SD.SessionToken));
             if (response != null && response.IsSuccess)
             {
                 VillaDTO model = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
@@ -96,7 +97,7 @@ namespace GatesVilla_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await villaServices.DeleteAsync<APIResponse>(villaDTO.Id);
+                var response = await villaServices.DeleteAsync<APIResponse>(villaDTO.Id, HttpContext.Session.GetString(SD.SessionToken));
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVilla));

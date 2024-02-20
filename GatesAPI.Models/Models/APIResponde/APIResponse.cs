@@ -21,6 +21,5 @@ namespace GatesVillaAPI.Models.Models.APIResponde
             ErrorMessages = errorMessages ?? new List<string>();
             Result = result;
         }
-
     }
 }

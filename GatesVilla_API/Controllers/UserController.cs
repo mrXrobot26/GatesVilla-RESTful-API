@@ -7,7 +7,7 @@ using System.Net;
 
 namespace GatesVilla_API.Controllers
 {
-    [Route("api/UserAuth")]
+    [Route("api/UsersAuth")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -18,6 +18,7 @@ namespace GatesVilla_API.Controllers
             this.unitOfWork = unitOfWork;
             response = new APIResponse();
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
@@ -30,7 +31,6 @@ namespace GatesVilla_API.Controllers
             response.SetResponseInfo(HttpStatusCode.OK, null, responseLogin, true);
             return Ok(response);
         }
-
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDTO model)

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using GatesVilla_Utility;
 using GatesVillaAPI.DataAcess.Repo.IRepo;
 using GatesVillaAPI.Models.Models.APIResponde;
 using GatesVillaAPI.Models.Models.DTOs.VillaDTOs;
 using GatesVillaAPI.Models.Models.MyModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -22,7 +24,7 @@ namespace GatesVilla_API.Controllers
             this.mapper = mapper;
             response = new();
         }
-
+        [Authorize(Roles = SD.Admin)]
         [HttpGet("{id:int}", Name = "GetVillaNumberById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,7 +56,7 @@ namespace GatesVilla_API.Controllers
                 return BadRequest(response);
             }
         }
-
+        [Authorize(Roles = SD.Admin)]
         [HttpGet("GetAllVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -80,7 +82,7 @@ namespace GatesVilla_API.Controllers
                 return BadRequest(response);
             }
         }
-
+        [Authorize(Roles = SD.Admin)]
         [HttpPost("AddVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -128,7 +130,7 @@ namespace GatesVilla_API.Controllers
             }
         }
 
-
+        [Authorize(Roles = SD.Admin)]
         [HttpPut("{id:int}", Name = "UpdateVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -171,7 +173,7 @@ namespace GatesVilla_API.Controllers
             }
         }
 
-
+        [Authorize(Roles = SD.Admin)]
         [HttpDelete("{id:int}", Name = "DeleteVillaNumber")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

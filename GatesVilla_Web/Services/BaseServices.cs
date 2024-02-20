@@ -3,6 +3,7 @@ using GatesVilla_Web.Models;
 using GatesVilla_Web.Services.IServices;
 using GatesVillaAPI.Models.Models.APIResponde;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace GatesVilla_Web.Services
@@ -46,6 +47,10 @@ namespace GatesVilla_Web.Services
                         break;
                 }
                 HttpResponseMessage responseMessage = null;
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                }
                 responseMessage = await client.SendAsync(requestMessage);
                 var apiContant = await responseMessage.Content.ReadAsStringAsync();
                 try

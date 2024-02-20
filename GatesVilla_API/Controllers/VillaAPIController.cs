@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Azure;
+using GatesVilla_Utility;
 using GatesVillaAPI.DataAcess.Data;
 using GatesVillaAPI.DataAcess.Repo.IRepo;
 using GatesVillaAPI.Models.Models.APIResponde;
 using GatesVillaAPI.Models.Models.DTOs.VillaDTOs;
 using GatesVillaAPI.Models.Models.MyModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +58,6 @@ namespace GatesVilla_API.Controllers
             }
         }
 
-
         [HttpGet("GetVillas")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -85,7 +86,7 @@ namespace GatesVilla_API.Controllers
         }
 
 
-
+        [Authorize(Roles = SD.Admin)]
         [HttpPost("AddVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -125,7 +126,7 @@ namespace GatesVilla_API.Controllers
         }
 
 
-
+        [Authorize(Roles = SD.Admin)]
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -162,8 +163,8 @@ namespace GatesVilla_API.Controllers
             }
         }
 
-
-		[HttpPut("UpdateVilla/{id:int}")]
+        [Authorize(Roles = SD.Admin)]
+        [HttpPut("UpdateVilla/{id:int}")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -205,8 +206,8 @@ namespace GatesVilla_API.Controllers
 
 
 
-
-		[HttpPatch("{id:int}")]
+        [Authorize(Roles = SD.Admin)]
+        [HttpPatch("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]

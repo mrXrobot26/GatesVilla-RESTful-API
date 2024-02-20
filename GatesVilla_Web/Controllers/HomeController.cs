@@ -1,4 +1,5 @@
 using AutoMapper;
+using GatesVilla_Utility;
 using GatesVilla_Web.Models;
 using GatesVilla_Web.Services.IServices;
 using GatesVillaAPI.Models.Models.APIResponde;
@@ -23,7 +24,7 @@ namespace GatesVilla_Web.Controllers
         {
             List<VillaDTO> list = new();
 
-            var response = await _villaService.GetAllAsync<APIResponse>();
+            var response = await _villaService.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result));
