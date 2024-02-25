@@ -1,5 +1,8 @@
-﻿using GatesVillaAPI.DataAcess.Data;
+﻿using AutoMapper;
+using GatesVillaAPI.DataAcess.Data;
 using GatesVillaAPI.DataAcess.Repo.IRepo;
+using GatesVillaAPI.Models.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,12 +22,19 @@ namespace GatesVillaAPI.DataAcess.Repo
 
 
         private readonly ApplicationDbContext db;
-        public UnitOfWork(ApplicationDbContext db , IConfiguration configuration )
+        private readonly IConfiguration configuration;
+        private readonly IMapper mapper;
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public UnitOfWork(ApplicationDbContext db , IConfiguration configuration, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             this.db = db;
+            this.configuration = configuration;
+            this.mapper = mapper;
+            this.userManager = userManager;
             Villa = new VillaRepository( db );
             VillaNumber = new VillaNumberRepository( db );
-            User = new UserRepository(db , configuration );
+            User = new UserRepository(db , configuration,userManager,mapper );
         }
 
         public async Task SaveChangesAsync()

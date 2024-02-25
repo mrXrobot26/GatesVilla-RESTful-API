@@ -1,4 +1,5 @@
 ﻿using GatesVillaAPI.Models.Models.DTOs.LoginAndRegisterDTOs;
+using GatesVillaAPI.Models.Models.DTOs.UserDTOs;
 using GatesVillaAPI.Models.Models.MyModels;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace GatesVillaAPI.DataAcess.Repo.IRepo
     {
         Task<bool> IsUniqe(string username);
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-        Task<LocalUser> Register(RegisterRequestDTO registerRequestDTO);
+        Task<UserDTO> Register(RegisterRequestDTO registerRequestDTO);
     }
 }

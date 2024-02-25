@@ -11,7 +11,7 @@
         }
 
         public static string SessionToken = "JWTToken";
-        public const string Admin = "Admin";
+        public const string Admin = "admin";
 
     }
 

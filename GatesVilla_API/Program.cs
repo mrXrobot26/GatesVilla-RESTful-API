@@ -2,17 +2,29 @@ using GatesVillaAPI.DataAcess.Data;
 using GatesVillaAPI.DataAcess.Repo;
 using GatesVillaAPI.DataAcess.Repo.IRepo;
 using GatesVillaAPI.Models.Mapper;
+using GatesVillaAPI.Models.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(/*option=> option.ReturnHttpNotAcceptable=true*/).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+builder.Services.AddControllers(option => 
+{
+    option.CacheProfiles.Add("Default30", new CacheProfile()
+    {
+        Duration = 30
+    });
+    
+    }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -72,12 +84,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
+builder.Services.AddResponseCaching();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 

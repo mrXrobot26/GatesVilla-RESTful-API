@@ -1,4 +1,5 @@
-﻿using GatesVillaAPI.Models.Models.MyModels;
+﻿using GatesVillaAPI.Models.Models.DTOs.UserDTOs;
+using GatesVillaAPI.Models.Models.MyModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace GatesVillaAPI.Models.Models.DTOs.LoginAndRegisterDTOs
 {
     public class LoginResponseDTO
     {
-        public LocalUser User { get; set; }
+        public UserDTO User { get; set; }
+        public string Role { get; set; }
         public string Token { get; set; }
     }
 }

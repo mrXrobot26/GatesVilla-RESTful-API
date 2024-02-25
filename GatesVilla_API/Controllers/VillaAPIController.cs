@@ -57,16 +57,30 @@ namespace GatesVilla_API.Controllers
                 return BadRequest(response);
             }
         }
-
+        [ResponseCache(CacheProfileName = "Default30")]
         [HttpGet("GetVillas")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "filterOccupancy")] int? occupancy, [FromQuery] string? search, int pageSize = 0, int pageNumber = 1)
         {
             try
             {
-                var villas = await unitOfWork.Villa.GetAllAsync();
+                IEnumerable<Villa> villas; 
+                if (occupancy > 0)
+                {
+                    villas = await unitOfWork.Villa.GetAllAsync(u => u.Occupancy == occupancy,pageSize:pageSize,
+                        pageNumber: pageNumber);
+                }
+                else
+                {
+                    villas = await unitOfWork.Villa.GetAllAsync(pageSize: pageSize,
+                        pageNumber: pageNumber);
+                }
+                if (!string.IsNullOrEmpty(search))
+                {
+                    villas = villas.Where(u => u.Name.ToLower().Contains(search));
+                }
                 if (!villas.Any())
                 {
                     response.SetResponseInfo(HttpStatusCode.NotFound, new List<string> { "Villas not found." }, null, false);
