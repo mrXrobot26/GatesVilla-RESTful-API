@@ -35,9 +35,9 @@ Search, Sort, and Filter APIs: Enhances data retrieval capabilities.
 Running the Project
 
 # To run GatesVilla:
-1- Clone the repository.
-2- Configure connection strings for seamless database interaction.
-3- Run database migrations to initialize the data structure.
-4- Build and run the application.
+* Clone the repository.
+* Configure connection strings for seamless database interaction.
+* Run database migrations to initialize the data structure.
+* Build and run the application.
 
 # Explore the power of GatesVilla, where technology meets sophistication.
