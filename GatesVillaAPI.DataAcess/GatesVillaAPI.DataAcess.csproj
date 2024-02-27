@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GatesAPI.Models\GatesVillaAPI.Models.csproj" />
+    <ProjectReference Include="..\GatesVilla_Utility\GatesVilla_Utility.csproj" />
   </ItemGroup>
 
 </Project>

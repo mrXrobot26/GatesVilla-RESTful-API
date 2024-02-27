@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVillaAPI.Models", "Gat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVillaAPI.DataAcess", "GatesVillaAPI.DataAcess\GatesVillaAPI.DataAcess.csproj", "{99734961-1420-41E0-8961-CC88340AF8D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatesVilla_Web", "GatesVilla_Web\GatesVilla_Web.csproj", "{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVilla_Web", "GatesVilla_Web\GatesVilla_Web.csproj", "{C2A7B82D-2A28-4189-8E86-7CC93572B8CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatesVilla_Utility", "GatesVilla_Utility\GatesVilla_Utility.csproj", "{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatesVilla_Utility", "GatesVilla_Utility\GatesVilla_Utility.csproj", "{D06C4DDA-B14C-4A64-B0B1-FE8CFB89C750}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClassLibrary", "ClassLibrary", "{76FD6D17-7AC4-4645-8DCE-1EA8F8B6D048}"
 EndProject

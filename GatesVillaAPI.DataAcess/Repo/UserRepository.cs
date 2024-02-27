@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GatesVilla_Utility;
 using GatesVillaAPI.DataAcess.Data;
 using GatesVillaAPI.DataAcess.Repo.IRepo;
 using GatesVillaAPI.Models.Models;
@@ -23,15 +24,17 @@ namespace GatesVillaAPI.DataAcess.Repo
         private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration configuration;
         private string securityKay;
-        public UserRepository(ApplicationDbContext db, IConfiguration configuration, UserManager<ApplicationUser> userManager,IMapper mapper)
+        public UserRepository(ApplicationDbContext db, IConfiguration configuration, UserManager<ApplicationUser> userManager,IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             this.db = db;
             this.configuration = configuration;
             this.userManager = userManager;
             this.mapper = mapper;
             securityKay = configuration.GetValue<string>("ApiSettings:Secret");
+            this.roleManager = roleManager;
         }
         public async Task<bool> IsUniqe(string username)
         {
@@ -58,6 +61,7 @@ namespace GatesVillaAPI.DataAcess.Repo
                     User = null,
                 };
             }
+
             var roles =await userManager.GetRolesAsync(user);
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(securityKay);
@@ -65,7 +69,7 @@ namespace GatesVillaAPI.DataAcess.Repo
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name,user.Id.ToString()),
+                    new Claim(ClaimTypes.Name,user.UserName.ToString()),
                     new Claim(ClaimTypes.Role,roles.FirstOrDefault())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -76,7 +80,6 @@ namespace GatesVillaAPI.DataAcess.Repo
             {
                 Token = handler.WriteToken(token),
                 User = mapper.Map<UserDTO>(user),
-                Role = roles.FirstOrDefault(),
             };
             return loginResponseDTO;
 
@@ -96,7 +99,15 @@ namespace GatesVillaAPI.DataAcess.Repo
                 var result = await userManager.CreateAsync(user, registerRequestDTO.Password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "admin");
+                    if ( ! roleManager.RoleExistsAsync(SD.Admin).GetAwaiter().GetResult() || ! roleManager.RoleExistsAsync(SD.Customer).GetAwaiter().GetResult())
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(SD.Admin));
+                        await roleManager.CreateAsync(new IdentityRole(SD.Customer));
+                    }
+
+                        await userManager.AddToRoleAsync(user, SD.Admin);
+                    
+
                     var userToReturn = db.ApplicationUsers
                         .FirstOrDefault(u => u.UserName == registerRequestDTO.UserName);
                     return mapper.Map<UserDTO>(userToReturn);

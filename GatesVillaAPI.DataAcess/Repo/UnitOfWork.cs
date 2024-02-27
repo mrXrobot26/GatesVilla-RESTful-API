@@ -25,16 +25,18 @@ namespace GatesVillaAPI.DataAcess.Repo
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public UnitOfWork(ApplicationDbContext db , IConfiguration configuration, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public UnitOfWork(ApplicationDbContext db , IConfiguration configuration, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.db = db;
             this.configuration = configuration;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.roleManager = roleManager;
             Villa = new VillaRepository( db );
             VillaNumber = new VillaNumberRepository( db );
-            User = new UserRepository(db , configuration,userManager,mapper );
+            User = new UserRepository(db , configuration,userManager,mapper,roleManager );
         }
 
         public async Task SaveChangesAsync()

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using GatesVillaAPI.Models.Models;
+using GatesVillaAPI.Models.Models.DTOs.UserDTOs;
 using GatesVillaAPI.Models.Models.DTOs.VillaDTOs;
 using GatesVillaAPI.Models.Models.MyModels;
 using System;
@@ -26,6 +28,9 @@ namespace GatesVillaAPI.Models.Mapper
 
             CreateMap<VillaNumberCreateDTO, VillaNumberDTO>().ReverseMap();
             CreateMap<VillaNumberUpdateDTO, VillaNumberDTO>().ReverseMap();
+
+
+            CreateMap<ApplicationUser, UserDTO>().ReverseMap();
 
         }
     }
