@@ -2,7 +2,7 @@
 GatesVilla is a sophisticated web application built using cutting-edge technologies to provide a seamless user experience. The application adopts an N-tier architecture, leveraging ASP.NET Core 7, Entity Framework Core, and MVC patterns. The RESTful API backend ensures efficient communication, while JWT authentication and role-based authorization enhance security.
 
 # Technologies
-* ASP.NET Core 7
+* ASP.NET Core 8
 * Entity Framework Core
 * MVC Pattern
 * RESTful APIs
